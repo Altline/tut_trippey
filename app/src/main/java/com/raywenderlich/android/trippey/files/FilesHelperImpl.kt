@@ -11,7 +11,14 @@ class FilesHelperImpl(
     }
 
     override fun saveData(fileName: String, data: String) {
-        TODO("Not yet implemented")
+        val file = buildFile(fileName)
+        val fileOutputStream = buildOutputStream(file)
+
+        fileOutputStream.use {
+            it.runCatching {
+                write(data.toByteArray())
+            }
+        }
     }
 
     override fun deleteData(fileName: String) {

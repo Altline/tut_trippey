@@ -35,6 +35,7 @@
 package com.raywenderlich.android.trippey.repository
 
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.raywenderlich.android.trippey.files.FilesHelper
 import com.raywenderlich.android.trippey.model.None
 import com.raywenderlich.android.trippey.model.SortOption
@@ -43,14 +44,14 @@ import com.raywenderlich.android.trippey.model.getSortOptionFromName
 
 class TrippeyRepositoryImpl(
   private val prefs : SharedPreferences,
-  private val filesHelper: FilesHelper
+  private val filesHelper: FilesHelper,
+  private val gson: Gson
 ) : TrippeyRepository {
 
   private val trips = mutableListOf<Trip>()
-  private var sortOption: SortOption = None
 
   override fun saveTrip(trip: Trip) {
-    trips.add(trip)
+    filesHelper.saveData(trip.id, gson.toJson(trip))
   }
 
   override fun updateTrip(trip: Trip) {
