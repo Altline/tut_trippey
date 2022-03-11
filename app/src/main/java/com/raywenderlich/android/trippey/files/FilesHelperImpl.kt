@@ -7,7 +7,7 @@ class FilesHelperImpl(
     private val directory: File
 ) : FilesHelper {
     override fun getData(): List<File> {
-        TODO("Not yet implemented")
+        return directory.listFiles()?.toList() ?: emptyList()
     }
 
     override fun saveData(fileName: String, data: String) {
