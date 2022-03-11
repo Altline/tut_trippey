@@ -64,4 +64,8 @@ object DatabaseConstants {
   """
 
   const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS $TRIP_TABLE_NAME"
+
+  const val QUERY_BY_ID = """
+    $COLUMN_ID = ?
+  """
 }
