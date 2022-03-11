@@ -35,8 +35,7 @@
 package com.raywenderlich.android.trippey.repository
 
 import android.content.SharedPreferences
-import com.google.gson.Gson
-import com.raywenderlich.android.trippey.files.FilesHelper
+import com.raywenderlich.android.trippey.database.TrippeyDatabase
 import com.raywenderlich.android.trippey.model.None
 import com.raywenderlich.android.trippey.model.SortOption
 import com.raywenderlich.android.trippey.model.Trip
@@ -44,28 +43,16 @@ import com.raywenderlich.android.trippey.model.getSortOptionFromName
 
 class TrippeyRepositoryImpl(
   private val prefs : SharedPreferences,
-  private val filesHelper: FilesHelper,
-  private val gson: Gson
+  private val database: TrippeyDatabase
 ) : TrippeyRepository {
 
-  override fun saveTrip(trip: Trip) {
-    filesHelper.saveData(trip.id, gson.toJson(trip))
-  }
+  override fun saveTrip(trip: Trip) = database.saveTrip(trip)
 
-  override fun updateTrip(trip: Trip) {
-    deleteTrip(trip.id)
-    saveTrip(trip)
-  }
+  override fun updateTrip(trip: Trip) = database.updateTrip(trip)
 
-  override fun deleteTrip(tripId: String) {
-    filesHelper.deleteData(tripId)
-  }
+  override fun deleteTrip(tripId: String) = database.deleteTrip(tripId)
 
-  override fun getTrips(): List<Trip> {
-    return filesHelper.getData().map {
-      gson.fromJson(it.readText(), Trip::class.java)
-    }
-  }
+  override fun getTrips(): List<Trip> = database.getTrips()
 
   override fun getSortOption(): SortOption {
     val option = prefs.getString(KEY_SORT_OPTION, None.name) ?: ""
