@@ -35,6 +35,7 @@
 package com.raywenderlich.android.trippey
 
 import android.app.Application
+import com.raywenderlich.android.trippey.files.FilesHelperImpl
 import com.raywenderlich.android.trippey.repository.TrippeyRepository
 import com.raywenderlich.android.trippey.repository.TrippeyRepositoryImpl
 
@@ -45,7 +46,13 @@ class App : Application() {
 
     private lateinit var instance: App
 
-    val repository: TrippeyRepository by lazy { TrippeyRepositoryImpl(sharedPreferences) }
+    private val filesHelper by lazy {
+      FilesHelperImpl(instance.filesDir)
+    }
+
+    val repository: TrippeyRepository by lazy {
+      TrippeyRepositoryImpl(sharedPreferences, filesHelper)
+    }
 
     private val sharedPreferences by lazy {
       instance.getSharedPreferences(KEY_PREFERENCES, MODE_PRIVATE)
