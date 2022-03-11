@@ -41,9 +41,15 @@ import com.raywenderlich.android.trippey.repository.TrippeyRepositoryImpl
 class App : Application() {
 
   companion object {
+    private const val KEY_PREFERENCES = "TrippeyPreferences"
+
     private lateinit var instance: App
 
-    val repository: TrippeyRepository by lazy { TrippeyRepositoryImpl() }
+    val repository: TrippeyRepository by lazy { TrippeyRepositoryImpl(sharedPreferences) }
+
+    private val sharedPreferences by lazy {
+      instance.getSharedPreferences(KEY_PREFERENCES, MODE_PRIVATE)
+    }
   }
 
   override fun onCreate() {
