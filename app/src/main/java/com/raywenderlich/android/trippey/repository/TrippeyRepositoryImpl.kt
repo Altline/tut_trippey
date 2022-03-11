@@ -78,10 +78,6 @@ class TrippeyRepositoryImpl(
       .apply()
   }
 
-  private fun getTrip(tripId: String): Trip? {
-    return getTrips().find { it.id == tripId }
-  }
-
   companion object {
     const val KEY_SORT_OPTION = "sort_option"
   }
