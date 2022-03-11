@@ -22,7 +22,10 @@ class FilesHelperImpl(
     }
 
     override fun deleteData(fileName: String) {
-        TODO("Not yet implemented")
+        val file = buildFile(fileName)
+        if (file.exists()) {
+            file.delete()
+        }
     }
 
     private fun buildFile(fileName: String): File {

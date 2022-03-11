@@ -48,27 +48,17 @@ class TrippeyRepositoryImpl(
   private val gson: Gson
 ) : TrippeyRepository {
 
-  private val trips = mutableListOf<Trip>()
-
   override fun saveTrip(trip: Trip) {
     filesHelper.saveData(trip.id, gson.toJson(trip))
   }
 
   override fun updateTrip(trip: Trip) {
-    val currentTrip = trips.firstOrNull { it.id == trip.id }
-
-    if (currentTrip != null) {
-      val tripIndex = trips.indexOf(currentTrip)
-      trips.remove(currentTrip)
-
-      trips.add(tripIndex, trip)
-    }
+    deleteTrip(trip.id)
+    saveTrip(trip)
   }
 
   override fun deleteTrip(tripId: String) {
-    val tripIndex = trips.indexOfFirst { it.id == tripId }
-
-    trips.removeAt(tripIndex)
+    filesHelper.deleteData(tripId)
   }
 
   override fun getTrips(): List<Trip> {
@@ -86,6 +76,10 @@ class TrippeyRepositoryImpl(
     prefs.edit()
       .putString(KEY_SORT_OPTION, sortOption.name)
       .apply()
+  }
+
+  private fun getTrip(tripId: String): Trip? {
+    return getTrips().find { it.id == tripId }
   }
 
   companion object {
