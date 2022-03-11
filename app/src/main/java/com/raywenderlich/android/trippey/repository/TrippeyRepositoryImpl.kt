@@ -82,6 +82,6 @@ class TrippeyRepositoryImpl(
   }
 
   companion object {
-    private const val KEY_SORT_OPTION = "sort_option"
+    const val KEY_SORT_OPTION = "sort_option"
   }
 }
