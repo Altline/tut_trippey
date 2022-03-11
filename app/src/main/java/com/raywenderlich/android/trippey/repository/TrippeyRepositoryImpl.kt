@@ -34,11 +34,15 @@
 
 package com.raywenderlich.android.trippey.repository
 
+import android.content.SharedPreferences
 import com.raywenderlich.android.trippey.model.None
 import com.raywenderlich.android.trippey.model.SortOption
 import com.raywenderlich.android.trippey.model.Trip
+import com.raywenderlich.android.trippey.model.getSortOptionFromName
 
-class TrippeyRepositoryImpl : TrippeyRepository {
+class TrippeyRepositoryImpl(
+  private val prefs : SharedPreferences
+) : TrippeyRepository {
 
   private val trips = mutableListOf<Trip>()
   private var sortOption: SortOption = None
@@ -66,9 +70,18 @@ class TrippeyRepositoryImpl : TrippeyRepository {
 
   override fun getTrips(): List<Trip> = trips
 
-  override fun getSortOption(): SortOption = sortOption
+  override fun getSortOption(): SortOption {
+    val option = prefs.getString(KEY_SORT_OPTION, None.name) ?: ""
+    return getSortOptionFromName(option)
+  }
 
   override fun saveSortOption(sortOption: SortOption) {
-    this.sortOption = sortOption
+    prefs.edit()
+      .putString(KEY_SORT_OPTION, sortOption.name)
+      .apply()
+  }
+
+  companion object {
+    private const val KEY_SORT_OPTION = "sort_option"
   }
 }
