@@ -39,6 +39,7 @@ import com.google.gson.Gson
 import com.raywenderlich.android.trippey.files.FilesHelperImpl
 import com.raywenderlich.android.trippey.repository.TrippeyRepository
 import com.raywenderlich.android.trippey.repository.TrippeyRepositoryImpl
+import java.io.File
 
 class App : Application() {
 
@@ -47,8 +48,18 @@ class App : Application() {
 
     private lateinit var instance: App
 
+  private fun getFilesDirectory(): File {
+    val dir = File(instance.getExternalFilesDir(null), "")
+
+    if (!dir.exists()) {
+      dir.mkdirs()
+    }
+
+    return dir
+  }
+
     private val filesHelper by lazy {
-      FilesHelperImpl(instance.filesDir)
+      FilesHelperImpl(getFilesDirectory())
     }
 
     private val gson by lazy { Gson() }
