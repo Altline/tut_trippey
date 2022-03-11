@@ -74,7 +74,11 @@ class TrippeyDatabase(
     }
 
     fun updateTrip(trip: Trip) {
-        TODO()
+        val database = writableDatabase ?: return
+        val newValues = ContentValues().apply {
+            put(DatabaseConstants.COLUMN_LOCATIONS, gson.toJson(trip.locations))
+        }
+        database.update(DatabaseConstants.TRIP_TABLE_NAME, newValues, QUERY_BY_ID, arrayOf(trip.id))
     }
 
     fun deleteTrip(tripId: String) {
